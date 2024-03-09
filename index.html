@@ -3,7 +3,9 @@
 <button>start</button>
 <script>
   /* global nn, Tone */
-
+  let canvas, ctx
+  
+  
   // ratios of intrvals for just intonation instead of equal tempermant
   const ratios = [1, 1.125, 1.25, 4 / 3, 1.5, 5 / 3, 15 / 8, 2, 2.5, 8 / 3, 3, 10 / 3, 15 / 4]
 
@@ -11,7 +13,7 @@
   const poly = new Tone.PolySynth().toDestination()
   const synth = new Tone.Synth().toDestination()
 
-  const tonic = nn.randomInt(100, 200)
+  const tonic = nn.randomInt(200, 400)
   let step = 0
 
   function play_chord(time) {
@@ -47,9 +49,19 @@
       nn.get('button').content('stop')
     }
   }
+  
+  function setup(){
+    nn.get('body')
+      .css({ margin: '0', height: '100vh' })
+    canvas = nn.create('canvas').addTo('body')
+    canvas.width = nn.width
+    canvas.height = nn.height
+    ctx = canvas.getContext('2d')
+  }
 
   nn.get('button').on('click', toggle)
   Tone.Transport.bpm.value = nn.randomInt(70, 150)
   Tone.Transport.scheduleRepeat(time => play(time), '8n')
+  nn.on('load', setup)
   
 </script>
