@@ -20,8 +20,8 @@
     if (Math.random() > 0.5){
       chord.push(tonic * ratios[i + 6] / 2)
     }
-    synth.triggerAttackRelease(chord[0] / 8, '1n', time, 0.2)
-    poly.triggerAttackRelease(chord, '1n', time)
+    synth.triggerAttackRelease(chord[0] / 8, '1n', time)
+    poly.triggerAttackRelease(chord, '1n', time, 0.2)
   }
 
   function play_note(time) {
