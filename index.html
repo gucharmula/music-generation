@@ -4,7 +4,7 @@
 <script>
   /* global nn, Tone */
   let canvas, ctx
-  
+  const rad = 75
   
   // ratios of intrvals for just intonation instead of equal tempermant
   const ratios = [1, 1.125, 1.25, 4 / 3, 1.5, 5 / 3, 15 / 8, 2, 2.5, 8 / 3, 3, 10 / 3, 15 / 4]
@@ -36,6 +36,8 @@
      
     ctx.fillStyle = `rgb(${nn.randomInt(0, 255)}, ${nn.randomInt(0, 255)}, ${nn.randomInt(0, 255)})`
     ctx.fillRect(0, 0, nn.width, nn.height)
+     
+     ctx.arc(nn.width / 2, nn.height / 2, rad, 0, 2 * Math.pi())
   }
 
   function play(time) {
