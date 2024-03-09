@@ -2,38 +2,44 @@
 <script src="https://tonejs.github.io/build/Tone.js"></script>
 <button>start</button>
 <script>
-/* global nn, Tone */
+  /* global nn, Tone */
 
-// ratios of intrvals for just intonation instead of equal tempermant
-const ratios = [1, 1.125,	1.25,	4/3, 1.5, 5/3, 15/8, 2]
+  // ratios of intrvals for just intonation instead of equal tempermant
+  const ratios = [1, 1.125, 1.25, 4 / 3, 1.5, 5 / 3, 15 / 8, 2, 2.5, 8 / 3, 3, 10 / 3, 15 / 4]
 
-const pluck = new Tone.PluckSynth().toDestination()
-const poly = new Tone.PolySynth().toDestination()
-const metal = new Tone.MetalSynth().toDestination()
+  const pluck = new Tone.PluckSynth().toDestination()
+  const poly = new Tone.PolySynth().toDestination()
+  const metal = new Tone.MetalSynth().toDestination()
 
-const tonic = nn.randomInt(300, 600)
-let step = 0
+  const tonic = nn.randomInt(200, 600)
+  let step = 0
 
-function play(time) {
-  play_chord(time)
-  if (Math.random() > 0.7){
-    play_note(time)
-  }
-  step++
-}
-function play_note (time) {
-    const note = tonic * Math.random(ratios)
-    if (note) {
-     synth.triggerAttackRelease(note, '8n', time) 
+  function play_chord(time) {
+    const note = tonic * Math.random(ratios.slice(6))
+    metal.triggerAttackRelease(note / 8, '1n', time)
+    const i = ratios.indexOf(note / tonic)
+    let chord = [ratios[i] * tonic, ratios[i + 2] * tonic, ratios [i + 4] * tonic]
+    if (Math.random() > 0.5){
+      chord.push(tonic * ratios[i + 6])
     }
-    
-    if (s === 0) {
-      poly.triggerAttackRelease(note, '2n', time)
-    }
-
+    poly.triggerAttackRelease(chord, '1n', time)
   }
-  
-  function toggle () {
+
+  function play_note(time) {
+    const note_pos = Math.random(ratios)
+    const note = tonic * note_pos
+    pluck.triggerAttackRelease(note, '16n', time)
+  }
+
+  function play(time) {
+    if (step % 16 === 0){
+      play_chord(time)}
+    if (Math.random() > 0.7) {
+      play_note(time)}
+    step++
+  }
+
+  function toggle() {
     if (Tone.Transport.state === 'started') {
       Tone.Transport.stop()
       nn.get('button').content('start')
@@ -43,7 +49,8 @@ function play_note (time) {
     }
   }
 
-  
   nn.get('button').on('click', toggle)
   Tone.Transport.bpm.value = nn.randomInt(70, 150)
   Tone.Transport.scheduleRepeat(time => play(time), '16n')
+  
+</script>
