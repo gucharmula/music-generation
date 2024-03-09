@@ -67,11 +67,12 @@
     canvas.width = nn.width
     canvas.height = nn.height
     ctx = canvas.getContext('2d')
+    
+      nn.get('button').on('click', toggle)
+      Tone.Transport.bpm.value = nn.randomInt(70, 150)
+      Tone.Transport.scheduleRepeat(time => play(time), '8n')
   }
 
-  nn.get('button').on('click', toggle)
-  Tone.Transport.bpm.value = nn.randomInt(70, 150)
-  Tone.Transport.scheduleRepeat(time => play(time), '8n')
   nn.on('load', setup)
   
 </script>
