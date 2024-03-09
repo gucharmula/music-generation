@@ -9,30 +9,29 @@
 
   const pluck = new Tone.PluckSynth().toDestination()
   const poly = new Tone.PolySynth().toDestination()
-  const metal = new Tone.MetalSynth().toDestination()
+  const synth = new Tone.Synth().toDestination()
 
-  const tonic = nn.randomInt(200, 600)
+  const tonic = nn.randomInt(100, 200)
   let step = 0
 
   function play_chord(time) {
-    const note = tonic * Math.random(ratios.slice(6))
-    metal.triggerAttackRelease(note / 8, '1n', time)
-    const i = ratios.indexOf(note / tonic)
-    let chord = [ratios[i] * tonic, ratios[i + 2] * tonic, ratios [i + 4] * tonic]
+    const i = nn.randomInt(0, 6)
+    let chord = [ratios[i] * tonic, ratios[i + 2] * tonic / 2, ratios [i + 4] * tonic / 2]
     if (Math.random() > 0.5){
-      chord.push(tonic * ratios[i + 6])
+      chord.push(tonic * ratios[i + 6] / 2)
     }
+    synth.triggerAttackRelease(chord[0] / 8, '1n', time, 0.2)
     poly.triggerAttackRelease(chord, '1n', time)
   }
 
   function play_note(time) {
     const note_pos = Math.random(ratios)
     const note = tonic * note_pos
-    pluck.triggerAttackRelease(note, '16n', time)
+    pluck.triggerAttackRelease(note, '8n', time)
   }
 
   function play(time) {
-    if (step % 16 === 0){
+    if (step % 8 === 0){
       play_chord(time)}
     if (Math.random() > 0.7) {
       play_note(time)}
@@ -51,6 +50,6 @@
 
   nn.get('button').on('click', toggle)
   Tone.Transport.bpm.value = nn.randomInt(70, 150)
-  Tone.Transport.scheduleRepeat(time => play(time), '16n')
+  Tone.Transport.scheduleRepeat(time => play(time), '8n')
   
 </script>
