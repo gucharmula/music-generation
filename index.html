@@ -31,14 +31,25 @@
     const note = tonic * note_pos
     pluck.triggerAttackRelease(note, '8n', time)
   }
+  
+   function draw(step){
+    ctx.fillStyle = `rgb(${nn.randomInt(0, 255)}, ${nn.randomInt(0, 255)}, ${nn.randomInt(0, 255)})`
+    ctx.fillRect(0, 0, nn.width, nn.height)
+     
+    
+  }
 
   function play(time) {
     if (step % 8 === 0){
       play_chord(time)}
     if (Math.random() > 0.7) {
-      play_note(time)}
+      play_note(time)
+    }
+    draw(step)
     step++
   }
+  
+ 
 
   function toggle() {
     if (Tone.Transport.state === 'started') {
