@@ -36,10 +36,13 @@
      
     ctx.fillStyle = `rgb(${nn.randomInt(0, 255)}, ${nn.randomInt(0, 255)}, ${nn.randomInt(0, 255)})`
     ctx.fillRect(0, 0, nn.width, nn.height)
-         ctx.beginPath()
-
-     ctx.arc(nn.width / 2, nn.height / 2, rad, 0, 2 * Math.PI())
      
+     const w = nn.width
+     const h = nn.height
+     
+     ctx.beginPath();
+     ctx.moveTo(w / 2, h / 2)
+     ctx.lineTo(w / 2 + w * Math.cos(Math.PI() * step / 8) / 2, h / 2 + h * Math.sin(Math.PI() * step / 8) / 2)
      ctx.stroke()
   }
 
